@@ -22,6 +22,7 @@
       <el-container v-for="item in list" :key="item.article_id" class="list_item_containe">
         <el-aside width="100px" style="background-color: rgb(238, 241, 246)">
           <el-image
+            @click="goToDetail(item.article_id)"
             :key="item.cover"
             :src="item.cover?item.cover:defaultCover"
             class="item_img"
@@ -29,7 +30,7 @@
           ></el-image>
         </el-aside>
         <el-main class="item_main">
-          <div>
+          <div @click="goToDetail(item.article_id)">
             <span class="item_title">{{item.article_title}}</span>
             <span class="item_info">发布日期：{{item.date}}</span>
             <span class="item_info">作者：{{item.user_nickname}}</span>
@@ -100,6 +101,12 @@ export default {
           // always executed
         });
     },
+    goToDetail(id) {
+      console.log(id);
+      if (id > 0) {
+        this.$router.push({ path: "/detail", query: { id: id } });
+      }
+    },
   },
 };
 </script>
@@ -114,6 +121,7 @@ export default {
   height: 100px;
   border: 1px solid #eee;
   margin-bottom: 15px;
+  cursor: pointer;
 }
 .item_img {
   height: 100px;

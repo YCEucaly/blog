@@ -85,5 +85,6 @@ export default {
 }
 .article_content >>> img {
   max-width: 90%;
+  text-indent: 0;
 }
 </style>

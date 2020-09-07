@@ -5,9 +5,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Eucaly</title>
+  <style>
+    .clock {
+      position: fixed;
+      top: 40px;
+      left: 0;
+      z-index: 100000;
+    }
+
+    .close_btn {
+      font-size: 12px;
+      background: #fff;
+      padding: 2px 5px;
+      display: block;
+      text-align: center;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="clock" id="clock">
+    <script>
+      function hideClock() {
+        document.getElementById("clock").style.display = "none";
+      }
+    </script>
+    <script charset="Shift_JIS"
+      src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_wh.js"></script>
+    <span class="close_btn" onclick="hideClock()">关闭时钟</span>
+  </div>
   <div id="app"></div>
   <!-- built files will be auto injected -->
 </body>
