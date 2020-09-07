@@ -3,6 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+const { env } = require('process')
 
 module.exports = {
   dev: {
@@ -12,7 +13,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:8011',
+        target: [process.env.VUE_APP_BASE_API],
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
