@@ -27,7 +27,8 @@
         <el-main class="item_main">
           <div @click="goToDetail(item.article_id)">
             <span class="item_title">{{item.article_title}}</span>
-            <span class="item_info">{{item.date}}</span>
+            <span class="item_info">发布日期：{{item.date}}</span>
+            <span class="item_info">作者：{{item.user_nickname}}</span>
           </div>
           <div class="item_tags">
             <span v-for="tag in item.tags" :key="tag">{{tag}}</span>
@@ -125,6 +126,7 @@ export default {
 .list {
   margin: 20px auto;
   max-width: 800px;
+  padding: 0 20px;
 }
 .list_item_containe {
   height: 100px;
@@ -162,5 +164,14 @@ export default {
   color: #a9a9a9;
   font-size: 12px;
   float: right;
+  margin-left: 10px;
+}
+@media screen and (max-width: 600px) {
+  .item_info {
+    color: #a9a9a9;
+    font-size: 12px;
+    float: left;
+    margin-right: 10px;
+  }
 }
 </style>

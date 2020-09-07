@@ -21,12 +21,18 @@
       </div>
       <el-container v-for="item in list" :key="item.article_id" class="list_item_containe">
         <el-aside width="100px" style="background-color: rgb(238, 241, 246)">
-          <el-image :key="item.cover" :src="item.cover" class="item_img" fit="fill"></el-image>
+          <el-image
+            :key="item.cover"
+            :src="item.cover?item.cover:defaultCover"
+            class="item_img"
+            fit="fill"
+          ></el-image>
         </el-aside>
         <el-main class="item_main">
           <div>
             <span class="item_title">{{item.article_title}}</span>
-            <span class="item_info">{{item.date}}</span>
+            <span class="item_info">发布日期：{{item.date}}</span>
+            <span class="item_info">作者：{{item.user_nickname}}</span>
           </div>
           <div class="item_tags">
             <span v-for="tag in item.tags" :key="tag">{{tag}}</span>
@@ -49,6 +55,7 @@
 </template>
 
 <script>
+import global from "../utils/global";
 export default {
   name: "category", // 分类
   data() {
@@ -66,13 +73,14 @@ export default {
 
       list: [],
       params: {
-        keyword: "",
+        keyword: "后端",
         pageNo: 1,
       },
+      defaultCover: global.defaultCover,
     };
   },
   created() {
-    console.log("home");
+    this.getListByKeyword();
   },
   methods: {
     getListByKeyword() {
@@ -100,6 +108,7 @@ export default {
 .list {
   margin: 20px auto;
   max-width: 800px;
+  padding: 0 20px;
 }
 .list_item_containe {
   height: 100px;
@@ -136,6 +145,15 @@ export default {
   color: #a9a9a9;
   font-size: 12px;
   float: right;
+  margin-left: 10px;
+}
+@media screen and (max-width: 600px) {
+  .item_info {
+    color: #a9a9a9;
+    font-size: 12px;
+    float: left;
+    margin-right: 10px;
+  }
 }
 .search_bar {
   margin-bottom: 30px;
