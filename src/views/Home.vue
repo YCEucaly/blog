@@ -47,13 +47,18 @@
         :total="400"
       ></el-pagination>-->
     </div>
+    <div v-if="loadingStatus">
+      <loading></loading>
+    </div>
   </div>
 </template>
 
 <script>
 import global from "../utils/global";
+import loading from "../components/Loading";
 export default {
   name: "home", // 首页
+  components: { loading },
   data() {
     return {
       recommendList: [],
@@ -63,6 +68,7 @@ export default {
       },
       articleList: [],
       defaultCover: global.defaultCover,
+      loadingStatus: false,
     };
   },
   created() {
@@ -73,6 +79,7 @@ export default {
   methods: {
     getArticleList() {
       const _this = this;
+      _this.loadingStatus = true;
       this.$axios
         .get("/api/blog/getArticles", {
           params: this.getArticleListParams,
@@ -86,10 +93,12 @@ export default {
         })
         .then(function () {
           // always executed
+          _this.loadingStatus = false;
         });
     },
     getRecommendList() {
       const _this = this;
+      _this.loadingStatus = true;
       this.$axios
         .get("/api/blog/getRecommendArticleList")
         .then(function (response) {
@@ -101,6 +110,7 @@ export default {
         })
         .then(function () {
           // always executed
+          _this.loadingStatus = false;
         });
     },
     goToDetail(id) {

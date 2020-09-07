@@ -14,16 +14,22 @@
       </div>
       <div class="article_content" v-html="detail.article_content"></div>
     </div>
+    <div v-if="loadingStatus">
+      <loading></loading>
+    </div>
   </div>
 </template>
 
 <script>
 import global from "../utils/global";
+import loading from "../components/Loading";
 export default {
+  components: { loading },
   data() {
     return {
       detail: {},
       defaultCover: global.defaultCover,
+      loadingStatus: false,
     };
   },
   created() {
@@ -34,6 +40,7 @@ export default {
   methods: {
     getDetail(id) {
       const _this = this;
+      _this.loadingStatus = true;
       this.$axios
         .get("/api/blog/getArticleDetail", {
           params: {
@@ -49,6 +56,7 @@ export default {
         })
         .then(function () {
           // always executed
+          _this.loadingStatus = false;
         });
     },
   },

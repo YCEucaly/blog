@@ -52,13 +52,18 @@
         :total="400"
       ></el-pagination>-->
     </div>
+    <div v-if="loadingStatus">
+      <loading></loading>
+    </div>
   </div>
 </template>
 
 <script>
 import global from "../utils/global";
+import loading from "../components/Loading";
 export default {
   name: "category", // 分类
+  components: { loading },
   data() {
     return {
       categoryList: [
@@ -78,6 +83,7 @@ export default {
         pageNo: 1,
       },
       defaultCover: global.defaultCover,
+      loadingStatus: false,
     };
   },
   created() {
@@ -86,6 +92,7 @@ export default {
   methods: {
     getListByKeyword() {
       const _this = this;
+      _this.loadingStatus = true;
       this.$axios
         .get("/api/blog/getArticles", {
           params: this.params,
@@ -99,6 +106,7 @@ export default {
         })
         .then(function () {
           // always executed
+          _this.loadingStatus = false;
         });
     },
     goToDetail(id) {
