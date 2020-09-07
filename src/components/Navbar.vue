@@ -1,13 +1,16 @@
 <template>
-  <div class="top-menu">
-    <span
-      class="menu-item"
-      @click="goToPage(item.path)"
-      v-for="item in menu"
-      v-bind:key="item.name"
-    >
-      <span class="border" :class="item.path==curPath?'active':''">{{item.name}}</span>
-    </span>
+  <div>
+    <div class="top-menu">
+      <span
+        class="menu-item"
+        @click="goToPage(item.path)"
+        v-for="item in menu"
+        v-bind:key="item.name"
+      >
+        <span class="border" :class="item.path==curPath?'active':''">{{item.name}}</span>
+      </span>
+    </div>
+    <div class="fill"></div>
   </div>
 </template>
 
@@ -75,5 +78,10 @@ export default {
   .menu-item {
     width: 20%;
   }
+}
+.fill {
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
 }
 </style>

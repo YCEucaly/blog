@@ -1,20 +1,31 @@
 <template>
   <div>
-    <el-carousel indicator-position="outside" height="330px">
+    <el-carousel v-if="recommendList.length>0" indicator-position="outside" height="330px">
       <el-carousel-item v-for="item in recommendList" :key="item.article_id">
-        <div>
-          <el-image :key="item.cover" :src="item.cover" class="cover_img" fit="cover"></el-image>
+        <div @click="goToDetail(item.article_id)">
+          <el-image
+            :key="item.cover"
+            :src="item.cover?item.cover:defaultCover"
+            class="cover_img"
+            fit="cover"
+          ></el-image>
           <div class="recommend_title">{{item.article_title}}</div>
         </div>
       </el-carousel-item>
     </el-carousel>
     <div class="list">
-      <el-container v-for="item in recommendList" :key="item.article_id" class="list_item_containe">
+      <el-container v-for="item in articleList" :key="item.article_id" class="list_item_containe">
         <el-aside width="100px" style="background-color: rgb(238, 241, 246)">
-          <el-image :key="item.cover" :src="item.cover" class="item_img" fit="fill"></el-image>
+          <el-image
+            @click="goToDetail(item.article_id)"
+            :key="item.cover"
+            :src="item.cover?item.cover:defaultCover"
+            class="item_img"
+            fit="fill"
+          ></el-image>
         </el-aside>
         <el-main class="item_main">
-          <div>
+          <div @click="goToDetail(item.article_id)">
             <span class="item_title">{{item.article_title}}</span>
             <span class="item_info">{{item.date}}</span>
           </div>
@@ -24,7 +35,7 @@
         </el-main>
       </el-container>
       <el-divider></el-divider>
-      <el-pagination
+      <!-- <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage4"
@@ -33,40 +44,70 @@
         small
         layout="total, sizes, prev, pager, next, jumper"
         :total="400"
-      ></el-pagination>
+      ></el-pagination>-->
     </div>
   </div>
 </template>
 
 <script>
+import global from "../utils/global";
 export default {
   name: "home", // 首页
   data() {
     return {
-      recommendList: [
-        {
-          article_id: 1,
-          article_title:
-            "标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试",
-          article_content: "<p style='color:red;'>内容测试</p>",
-          cover:
-            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599334219030&di=22194e568bd597cf84fbe66d2d59a3ac&imgtype=0&src=http%3A%2F%2Fimage.namedq.com%2Fuploads%2F20190713%2F18%2F1563015100-REASKtigGP.jpeg",
-          tags: ["前端", "后端", "Angular"],
-          date: "2020-09-01 00:00:00",
-        },
-        {
-          article_id: 2,
-          article_title: "标题测试2",
-          article_content: "<p style='color:red;'>内容测试</p>",
-          cover:
-            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599334219030&di=22194e568bd597cf84fbe66d2d59a3ac&imgtype=0&src=http%3A%2F%2Fimage.namedq.com%2Fuploads%2F20190713%2F18%2F1563015100-REASKtigGP.jpeg",
-          date: "2020-09-01 00:00:00",
-        },
-      ],
+      recommendList: [],
+      getArticleListParams: {
+        pageNo: 1,
+        keyword: "",
+      },
+      articleList: [],
+      defaultCover: global.defaultCover,
     };
   },
   created() {
     console.log("home");
+    this.getRecommendList();
+    this.getArticleList();
+  },
+  methods: {
+    getArticleList() {
+      const _this = this;
+      this.$axios
+        .get("/api/blog/getArticles", {
+          params: this.getArticleListParams,
+        })
+        .then(function (response) {
+          console.log(response);
+          _this.articleList = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+    },
+    getRecommendList() {
+      const _this = this;
+      this.$axios
+        .get("/api/blog/getRecommendArticleList")
+        .then(function (response) {
+          console.log(response);
+          _this.recommendList = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+    },
+    goToDetail(id) {
+      console.log(id);
+      if (id > 0) {
+        this.$router.push({ path: "/detail", query: { id: id } });
+      }
+    },
   },
 };
 </script>
@@ -74,6 +115,7 @@ export default {
 <style scoped>
 .cover_img {
   height: 300px;
+  cursor: pointer;
 }
 .recommend_title {
   position: relative;
@@ -82,12 +124,13 @@ export default {
 }
 .list {
   margin: 20px auto;
-  max-width: 500px;
+  max-width: 800px;
 }
 .list_item_containe {
   height: 100px;
   border: 1px solid #eee;
   margin-bottom: 15px;
+  cursor: pointer;
 }
 .item_img {
   height: 100px;

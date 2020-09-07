@@ -2,7 +2,13 @@
   <div>
     <div class="list">
       <div class="search_bar">
-        <el-input placeholder="请输入内容" clearable prefix-icon="el-icon-search" v-model="keyword"></el-input>
+        <el-input
+          placeholder="请输入内容"
+          clearable
+          prefix-icon="el-icon-search"
+          v-model="params.keyword"
+          @blur="getListByKeyword()"
+        ></el-input>
       </div>
       <div class="category_list">
         <el-tag
@@ -13,7 +19,7 @@
           effect="plain"
         >{{ item.name }}</el-tag>
       </div>
-      <el-container v-for="item in recommendList" :key="item.article_id" class="list_item_containe">
+      <el-container v-for="item in list" :key="item.article_id" class="list_item_containe">
         <el-aside width="100px" style="background-color: rgb(238, 241, 246)">
           <el-image :key="item.cover" :src="item.cover" class="item_img" fit="fill"></el-image>
         </el-aside>
@@ -28,7 +34,7 @@
         </el-main>
       </el-container>
       <el-divider></el-divider>
-      <el-pagination
+      <!-- <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage4"
@@ -37,7 +43,7 @@
         small
         layout="total, sizes, prev, pager, next, jumper"
         :total="400"
-      ></el-pagination>
+      ></el-pagination>-->
     </div>
   </div>
 </template>
@@ -57,31 +63,35 @@ export default {
           color: "success",
         },
       ],
-      keyword: "",
-      recommendList: [
-        {
-          article_id: 1,
-          article_title:
-            "标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试标题测试",
-          article_content: "<p style='color:red;'>内容测试</p>",
-          cover:
-            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599334219030&di=22194e568bd597cf84fbe66d2d59a3ac&imgtype=0&src=http%3A%2F%2Fimage.namedq.com%2Fuploads%2F20190713%2F18%2F1563015100-REASKtigGP.jpeg",
-          tags: ["前端", "后端", "Angular"],
-          date: "2020-09-01 00:00:00",
-        },
-        {
-          article_id: 2,
-          article_title: "标题测试2",
-          article_content: "<p style='color:red;'>内容测试</p>",
-          cover:
-            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599334219030&di=22194e568bd597cf84fbe66d2d59a3ac&imgtype=0&src=http%3A%2F%2Fimage.namedq.com%2Fuploads%2F20190713%2F18%2F1563015100-REASKtigGP.jpeg",
-          date: "2020-09-01 00:00:00",
-        },
-      ],
+
+      list: [],
+      params: {
+        keyword: "",
+        pageNo: 1,
+      },
     };
   },
   created() {
     console.log("home");
+  },
+  methods: {
+    getListByKeyword() {
+      const _this = this;
+      this.$axios
+        .get("/api/blog/getArticles", {
+          params: this.params,
+        })
+        .then(function (response) {
+          console.log(response);
+          _this.list = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          // always executed
+        });
+    },
   },
 };
 </script>
@@ -89,7 +99,7 @@ export default {
 <style scoped>
 .list {
   margin: 20px auto;
-  max-width: 500px;
+  max-width: 800px;
 }
 .list_item_containe {
   height: 100px;
