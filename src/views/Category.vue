@@ -42,16 +42,16 @@
         </el-main>
       </el-container>
       <el-divider></el-divider>
-      <!-- <el-pagination
+      <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage4"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :current-page="params.pageNo"
+        :page-sizes="[10,20,30,50]"
+        :page-size="params.pageSize"
         small
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
-      ></el-pagination>-->
+        :total="total"
+      ></el-pagination>
     </div>
     <div v-if="loadingStatus">
       <loading></loading>
@@ -84,10 +84,12 @@ export default {
 
       list: [],
       params: {
-        keyword: "",
         pageNo: 1,
+        keyword: "",
+        pageSize: 20,
         tag: "",
       },
+      total: 0,
       defaultCover: global.defaultCover,
       loadingStatus: false,
     };
@@ -105,7 +107,10 @@ export default {
         })
         .then(function (response) {
           console.log(response);
-          _this.list = response.data;
+          if (response.data && response.data.list) {
+            _this.list = response.data.list;
+            _this.total = response.data.total;
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -129,6 +134,16 @@ export default {
       } else {
         this.params.tag = tag;
       }
+      this.getListByKeyword();
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.params.pageSize = val;
+      this.getListByKeyword();
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.params.pageNo = val;
       this.getListByKeyword();
     },
   },
