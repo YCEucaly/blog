@@ -19,27 +19,32 @@ export default {
   name: "navbar",
   data() {
     return {
-      curPath: "home",
+      curPath: "/home",
       menu: [
         {
           name: "首页",
-          path: "home",
+          path: "/home",
         },
         {
           name: "分类",
-          path: "category",
+          path: "/category",
         },
         {
           name: "关于",
-          path: "about",
+          path: "/about",
         },
       ],
     };
   },
+  created() {
+    this.curPath = this.$route.path;
+  },
   methods: {
     goToPage(path) {
-      this.curPath = path;
-      this.$router.push(path);
+      if (this.curPath != path) {
+        this.curPath = path;
+        this.$router.push(path);
+      }
     },
   },
 };

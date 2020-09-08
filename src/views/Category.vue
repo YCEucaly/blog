@@ -12,6 +12,7 @@
       </div>
       <div class="category_list">
         <el-tag
+          @click="chooseTag(item.name)"
           class="tag"
           v-for="item in categoryList"
           :key="item.name"
@@ -69,11 +70,15 @@ export default {
       categoryList: [
         {
           name: "前端",
-          color: "info",
+          color: "primary",
         },
         {
           name: "后端",
           color: "success",
+        },
+        {
+          name: "运维",
+          color: "warning",
         },
       ],
 
@@ -114,6 +119,11 @@ export default {
       if (id > 0) {
         this.$router.push({ path: "/detail", query: { id: id } });
       }
+    },
+    chooseTag(tag) {
+      console.log(123, tag);
+      this.params.keyword = tag;
+      this.getListByKeyword();
     },
   },
 };
