@@ -121,7 +121,6 @@ export default {
       }
     },
     chooseTag(tag) {
-      console.log(123, tag);
       this.params.keyword = tag;
       this.getListByKeyword();
     },
