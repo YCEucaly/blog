@@ -43,6 +43,7 @@
       </el-container>
       <el-divider></el-divider>
       <el-pagination
+        v-if="total>0"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="params.pageNo"
