@@ -36,7 +36,7 @@
             <span class="item_info">发布日期：{{item.date}}</span>
             <span class="item_info">作者：{{item.user_nickname}}</span>
           </div>
-          <div class="item_tags">
+          <div class="item_tags" v-if="item.tags">
             <span v-for="tag in item.tags.split(',')" :key="tag">{{tag}}</span>
           </div>
         </el-main>

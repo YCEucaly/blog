@@ -12,7 +12,17 @@
         <span>作者：{{detail.user_nickname}}</span>
         <span>发布日期：{{detail.date}}</span>
       </div>
-      <div class="article_content" v-html="detail.article_content"></div>
+      <div class="article_content">
+        <mavon-editor
+          class="md"
+          :value="detail.article_content"
+          :subfield="prop.subfield"
+          :defaultOpen="prop.defaultOpen"
+          :toolbarsFlag="prop.toolbarsFlag"
+          :editable="prop.editable"
+          :scrollStyle="prop.scrollStyle"
+        />
+      </div>
     </div>
     <div v-if="loadingStatus">
       <loading></loading>
@@ -21,10 +31,12 @@
 </template>
 
 <script>
+import { mavonEditor } from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
 import global from "../utils/global";
 import loading from "../components/Loading";
 export default {
-  components: { loading },
+  components: { loading, mavonEditor },
   data() {
     return {
       detail: {},
@@ -36,6 +48,19 @@ export default {
     if (this.$route.query.id > 0) {
       this.getDetail(this.$route.query.id);
     }
+  },
+  computed: {
+    // 解析器配置
+    prop() {
+      let data = {
+        subfield: false, // 单双栏模式
+        defaultOpen: "preview", //edit： 默认展示编辑区域 ， preview： 默认展示预览区域
+        editable: false, // 是否允许编辑
+        toolbarsFlag: false,
+        scrollStyle: true,
+      };
+      return data;
+    },
   },
   methods: {
     getDetail(id) {
@@ -87,12 +112,11 @@ export default {
 .article_content {
   text-align: left;
   text-indent: 28px;
-  width: 90%;
+  width: 100%;
   overflow-x: hidden;
-  padding: 15px 5%;
 }
 .article_content >>> img {
-  max-width: 90%;
+  max-width: 100%;
   text-indent: 0;
 }
 </style>
