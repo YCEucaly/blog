@@ -84,7 +84,7 @@ export default {
       const _this = this;
       _this.loadingStatus = true;
       this.$axios
-        .get("/api/blog/getArticles", {
+        .get(global.httpUrl + "/blog/getArticles", {
           params: this.getArticleListParams,
         })
         .then(function (response) {
@@ -106,7 +106,7 @@ export default {
       const _this = this;
       _this.loadingStatus = true;
       this.$axios
-        .get("/api/blog/getRecommendArticleList")
+        .get(global.httpUrl + "/blog/getRecommendArticleList")
         .then(function (response) {
           console.log(response);
           _this.recommendList = response.data;

@@ -103,7 +103,7 @@ export default {
       const _this = this;
       _this.loadingStatus = true;
       this.$axios
-        .get("/api/blog/getArticles", {
+        .get(global.httpUrl + "/blog/getArticles", {
           params: this.params,
         })
         .then(function (response) {

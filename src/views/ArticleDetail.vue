@@ -42,7 +42,7 @@ export default {
       const _this = this;
       _this.loadingStatus = true;
       this.$axios
-        .get("/api/blog/getArticleDetail", {
+        .get(global.httpUrl + "/blog/getArticleDetail", {
           params: {
             id: id,
           },
