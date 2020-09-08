@@ -3,7 +3,7 @@
     <div class="list">
       <div class="search_bar">
         <el-input
-          placeholder="请输入内容"
+          placeholder="请输入关键字"
           clearable
           prefix-icon="el-icon-search"
           v-model="params.keyword"
@@ -17,7 +17,7 @@
           v-for="item in categoryList"
           :key="item.name"
           :type="item.color"
-          effect="plain"
+          :effect="item.name==params.tag?'dark':'plain'"
         >{{ item.name }}</el-tag>
       </div>
       <el-container v-for="item in list" :key="item.article_id" class="list_item_containe">
@@ -84,8 +84,9 @@ export default {
 
       list: [],
       params: {
-        keyword: "后端",
+        keyword: "",
         pageNo: 1,
+        tag: "",
       },
       defaultCover: global.defaultCover,
       loadingStatus: false,
@@ -121,7 +122,13 @@ export default {
       }
     },
     chooseTag(tag) {
-      this.params.keyword = tag;
+      if (this.params.tag == tag) {
+        const params = JSON.parse(JSON.stringify(this.params));
+        params.tag = "";
+        this.params = params;
+      } else {
+        this.params.tag = tag;
+      }
       this.getListByKeyword();
     },
   },
