@@ -41,8 +41,8 @@ export default {
   },
   methods: {
     goToPage(path) {
-      if (this.curPath != path) {
-        this.$route.path = path;
+      if (this.$route.path != path) {
+        this.curPath = path;
         this.$router.push(path);
       }
     },
