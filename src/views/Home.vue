@@ -31,7 +31,7 @@
             <span class="item_info">作者：{{item.user_nickname}}</span>
           </div>
           <div class="item_tags">
-            <span v-for="tag in item.tags" :key="tag">{{tag}}</span>
+            <span v-for="tag in item.tags.split(',')" :key="tag">{{tag}}</span>
           </div>
         </el-main>
       </el-container>
