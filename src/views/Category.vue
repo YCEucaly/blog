@@ -81,6 +81,14 @@ export default {
           name: "运维",
           color: "warning",
         },
+        {
+          name: "安卓",
+          color: "primary",
+        },
+        {
+          name: "IOS",
+          color: "primary",
+        },
       ],
 
       list: [],
@@ -93,6 +101,7 @@ export default {
       total: 0,
       defaultCover: global.defaultCover,
       loadingStatus: false,
+      id: 0, // TODO:修改博客
     };
   },
   created() {
