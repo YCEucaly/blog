@@ -119,4 +119,7 @@ export default {
   max-width: 100%;
   text-indent: 0;
 }
+.cover_img {
+  height: 300px;
+}
 </style>
